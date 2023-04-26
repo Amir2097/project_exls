@@ -5,7 +5,9 @@ import pandas as pd
 
 def folders(dirxlsx=None):
     """
-    Функция принимает путь для файлов складов
+    Функция возвращает форматированый путь до рабочей директории
+    :param dirxlsx: Путь до рабочей директории (если None то возвращается путь текущей директории)
+    :return: Магия
     """
 
     if dirxlsx is None:
@@ -18,8 +20,8 @@ def folders(dirxlsx=None):
 
 def extract_all_files():
     """
-    Добавление всех путей в список
-    :return:
+    Функция для поиска и добавления файлов по которым будет производиться извлечение данных
+    :return: Список файлов с полными путями
     """
     files_list = []
     print(folders())
@@ -37,10 +39,7 @@ def read_xlsx():
     :return:
     """
     for store in extract_all_files():
-
         file_store = pd.read_excel(store)
-
-
 
 
 if __name__ == '__main__':
