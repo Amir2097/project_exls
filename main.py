@@ -18,18 +18,16 @@ def folders(dirxlsx=None):
     return ref_dir
 
 
-def extract_all_files():
+def extract_all_files(folders_ex):
     """
     Функция для поиска и добавления файлов по которым будет производиться извлечение данных
     :return: Список файлов с полными путями
     """
     files_list = []
-    print(folders())
-    for file in sorted(glob.glob(f'{folders()}/Склад[0-9]*.xls*')):
+    for file in sorted(glob.glob(f'{folders(folders_ex)}/Склад[0-9]*.xls*')):
         print(file)
         files_list.append(os.path.join(folders(), file))
 
-    print(files_list)
     return files_list
 
 
