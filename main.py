@@ -5,6 +5,9 @@ import pandas as pd
 
 
 def folders(dirxlsx=None):
+    """
+    Функция принимает путь для файлов складов
+    """
 
     if dirxlsx is None:
         ref_dir = os.path.abspath(os.curdir)
@@ -15,6 +18,10 @@ def folders(dirxlsx=None):
 
 
 def extract_all_files():
+    """
+    Добавление всех путей в список
+    :return:
+    """
     files_list = []
     print(folders())
     for file in sorted(glob.glob(f'{folders()}/Склад[0-9]*.xls*')):
@@ -26,15 +33,15 @@ def extract_all_files():
 
 
 def read_xlsx():
-    for i in extract_all_files():
-        wookbook = openpyxl.load_workbook(i)
-        # Define variable to read the active sheet:
-        worksheet = wookbook.active
-        # Iterate the loop to read the cell values
-        for ii in range(0, worksheet.max_row):
-            for col in worksheet.iter_cols(1, worksheet.max_column):
-                print(col[ii].value, end="\t\t")
-            print('\n')
+    """
+
+    :return:
+    """
+    for store in extract_all_files():
+
+        file_store = pd.read_excel(store)
+
+
 
 
 if __name__ == '__main__':
