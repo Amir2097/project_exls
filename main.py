@@ -34,13 +34,43 @@ def read_xlsx(folders_read=os.path.abspath(os.curdir)):
         else:
             read_excel_store = pd.read_excel(store)
 
-
         for fuck in read_excel_store.columns:
-            print(fuck)
 
-            if 'Дата' in fuck:
-                print()
+            if 'дата' in fuck.lower():
+                date_store = read_excel_store[fuck]
 
+            if 'наим' in fuck.lower():
+                title_store = read_excel_store[fuck]
+
+            if 'бренд' in fuck.lower():
+                brand_store = read_excel_store[fuck]
+
+            if 'артик' in fuck.lower() or 'код дет' in fuck.lower():
+                article_store = read_excel_store[fuck]
+
+            if 'клиент' in fuck.lower():
+                client_store = read_excel_store[fuck]
+
+            if 'колич' in fuck.lower() or 'кол-во' in fuck.lower():
+                quantity_store = read_excel_store[fuck]
+
+            if 'цена' in fuck.lower():
+                price_store = read_excel_store[fuck]
+
+            if 'сумма' == fuck.lower():
+                summ_store = read_excel_store[fuck]
+
+            if 'сумма прод' in fuck.lower():
+                summ_buy_store = read_excel_store[fuck]
+
+            if 'склад' == fuck.lower():
+                store_store = read_excel_store[fuck]
+
+            if 'прим' in fuck.lower() or 'ваш комм' in fuck.lower():
+                note_store = read_excel_store[fuck]
+
+            if 'номер зак' in fuck.lower() or '№' in fuck.lower():
+                number_store = read_excel_store[fuck]
 
         # ------------------------------------------
 
@@ -54,3 +84,4 @@ def read_xlsx(folders_read=os.path.abspath(os.curdir)):
 
 if __name__ == '__main__':
     read_xlsx()
+    # extract_all_files()
