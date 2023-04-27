@@ -25,6 +25,10 @@ def read_xlsx(folders_read=os.path.abspath(os.curdir)):
     colnames = ['ДАТА', 'НАИМЕНОВАНИЕ', 'БРЕНД', 'АРТИКУЛ', 'КЛИЕНТ', 'КОЛИЧЕСТВО', 'ЦЕНА', 'СУММА', 'ПРОДАЖА',
                 'СУММА ПРОДАЖИ', '      ', 'СКЛАД', '      ', '      ', 'ПРИМЕЧАНИЕ', 'НОМЕР ЗАКАЗА']
 
+    head_file = pd.read_excel('Главный.xlsx')
+    head_file.columns = colnames  # Переименование столбцов
+
+
     for store in extract_all_files(folders_read):
 
         read_excel_store = pd.read_excel(store)
@@ -38,6 +42,7 @@ def read_xlsx(folders_read=os.path.abspath(os.curdir)):
 
             if 'дата' in fuck.lower():
                 date_store = read_excel_store[fuck]
+
 
             if 'наим' in fuck.lower():
                 title_store = read_excel_store[fuck]
