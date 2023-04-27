@@ -111,8 +111,9 @@ class Main_window(customtkinter.CTk):
         try:
             # ----------------------------------------------------------------------------------------------------------
             import main
-            for ii in main.extract_all_files(config.get("WORK", "WORK_DIR")):
-                self.enter_log(f"{ii.split('/')[-1]} - Обрабатывается!")
+
+            if main.read_xlsx(config.get("WORK", "WORK_DIR")):
+                self.enter_log('Файлы обработанны')
 
             # ----------------------------------------------------------------------------------------------------------
         except Exception as er:

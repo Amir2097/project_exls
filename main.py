@@ -31,15 +31,13 @@ def extract_all_files(folders_ex):
     return files_list
 
 
-def read_xlsx():
+def read_xlsx(folders_read):
     """
 
     :return:
     """
-    for store in extract_all_files():
+    for store in extract_all_files(folders_read):
         file_store = pd.read_excel(store)
+        return file_store
 
 
-if __name__ == '__main__':
-    read_xlsx()
-    # extract_all_files()
