@@ -35,6 +35,12 @@ def read_xlsx(folders_read=os.path.abspath(os.curdir)):
             read_excel_store = pd.read_excel(store)
 
 
+        for fuck in read_excel_store.columns:
+            print(fuck)
+
+            if 'Дата' in fuck:
+                print()
+
 
         # ------------------------------------------
 
