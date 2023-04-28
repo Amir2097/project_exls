@@ -28,7 +28,7 @@ def read_xlsx(folders_read=os.path.abspath(os.curdir)):
     colnames = ['ДАТА', 'НАИМЕНОВАНИЕ', 'БРЕНД', 'АРТИКУЛ', 'КЛИЕНТ', 'КОЛИЧЕСТВО', 'ЦЕНА', 'СУММА', 'ПРОДАЖА',
                 'СУММА ПРОДАЖИ', 'Unnamed: 10', 'СКЛАД', 'Unnamed: 12', 'Unnamed: 13', 'ПРИМЕЧАНИЕ', 'НОМЕР ЗАКАЗА']
 
-    head_file = pd.read_excel('ГЛАВНЫЙ.xlsx')
+    head_file = pd.read_excel(f'{folders_read}/ГЛАВНЫЙ.xlsx')
     head_file.columns = colnames  # Переименование столбцов
 
     new_dict = {'ДАТА': [], 'НАИМЕНОВАНИЕ': [], 'БРЕНД': [], 'АРТИКУЛ': [], 'КЛИЕНТ': [], 'КОЛИЧЕСТВО': [], 'ЦЕНА': [],
