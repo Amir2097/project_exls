@@ -59,6 +59,7 @@ def read_xlsx(folders_read=os.path.abspath(os.curdir)):
                 date_store = read_excel_store[fuck]
                 for i in date_store:
                     new_dict['ДАТА'].append(i)
+                    new_dict['СКЛАД'].append(current_warehouse_number)
 
             if 'наим' in fuck.lower() or 'описание' in fuck.lower():
                 title_store = read_excel_store[fuck]
@@ -105,12 +106,6 @@ def read_xlsx(folders_read=os.path.abspath(os.curdir)):
                 for i in summ_buy_store:
                     new_dict['СУММА ПРОДАЖИ'].append(i)
 
-            if 'склад' == fuck.lower():
-                # TODO добавить название складов из файла
-                store_store = read_excel_store[fuck]
-                for i in store_store:
-                    new_dict['СКЛАД'].append(i)
-
             if 'прим' in fuck.lower() or 'ваш комм' in fuck.lower():
                 note_store = read_excel_store[fuck]
                 for i in note_store:
@@ -131,13 +126,13 @@ def read_xlsx(folders_read=os.path.abspath(os.curdir)):
                     quantity = len_max - len(x)
                     for i in range(quantity):
                         x.append(None)
-    # fd = pd.DataFrame(new_dict)
-    # fd.to_excel('sample.xlsx', index=False)
-    # reads_exc = pd.read_excel('sample.xlsx')
-    #
-    # xs = pd.DataFrame()
-    # xs = pd.concat([head_file, reads_exc])
-    # xs.to_excel('ГЛАВНЫЙ.xlsx', index=False)
+    fd = pd.DataFrame(new_dict)
+    fd.to_excel('sample.xlsx', index=False)
+    reads_exc = pd.read_excel('sample.xlsx')
+
+    xs = pd.DataFrame()
+    xs = pd.concat([head_file, reads_exc])
+    xs.to_excel('ГЛАВНЫЙ.xlsx', index=False)
 
     # ------------------------------------------
 
