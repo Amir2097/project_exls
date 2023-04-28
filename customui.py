@@ -112,8 +112,7 @@ class Main_window(customtkinter.CTk):
             # ----------------------------------------------------------------------------------------------------------
             import main
 
-            if main.read_xlsx(config.get("WORK", "WORK_DIR")):
-                self.enter_log('Файлы обработанны')
+            self.enter_log(main.read_xlsx(config.get("WORK", "WORK_DIR")))
 
             # ----------------------------------------------------------------------------------------------------------
         except Exception as er:

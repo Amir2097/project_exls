@@ -1,7 +1,13 @@
+import csv
 import glob
 import os
 import re
+
 import pandas as pd
+import numpy as np
+
+
+return_list = []
 
 
 def extract_all_files(folders_ex):
@@ -38,6 +44,8 @@ def read_xlsx(folders_read=os.path.abspath(os.curdir)):
         pattern = re.compile(r"[0-9]+")
         current_warehouse_number = pattern.findall(((store.split('/')[-1]).split('.')[0]))[0]
 
+        return_list.append(current_warehouse_number)
+
         read_excel_store = pd.read_excel(store)
 
         if "Unnamed" in str(read_excel_store.columns[0]):
@@ -51,7 +59,6 @@ def read_xlsx(folders_read=os.path.abspath(os.curdir)):
                 date_store = read_excel_store[fuck]
                 for i in date_store:
                     new_dict['ДАТА'].append(i)
-                    new_dict['СКЛАД'].append(current_warehouse_number)
 
             if 'наим' in fuck.lower() or 'описание' in fuck.lower():
                 title_store = read_excel_store[fuck]
@@ -98,6 +105,12 @@ def read_xlsx(folders_read=os.path.abspath(os.curdir)):
                 for i in summ_buy_store:
                     new_dict['СУММА ПРОДАЖИ'].append(i)
 
+            if 'склад' == fuck.lower():
+                # TODO добавить название складов из файла
+                store_store = read_excel_store[fuck]
+                for i in store_store:
+                    new_dict['СКЛАД'].append(i)
+
             if 'прим' in fuck.lower() or 'ваш комм' in fuck.lower():
                 note_store = read_excel_store[fuck]
                 for i in note_store:
@@ -118,13 +131,25 @@ def read_xlsx(folders_read=os.path.abspath(os.curdir)):
                     quantity = len_max - len(x)
                     for i in range(quantity):
                         x.append(None)
-    fd = pd.DataFrame(new_dict)
-    fd.to_excel('sample.xlsx', index=False)
-    reads_exc = pd.read_excel('sample.xlsx')
+    # fd = pd.DataFrame(new_dict)
+    # fd.to_excel('sample.xlsx', index=False)
+    # reads_exc = pd.read_excel('sample.xlsx')
+    #
+    # xs = pd.DataFrame()
+    # xs = pd.concat([head_file, reads_exc])
+    # xs.to_excel('ГЛАВНЫЙ.xlsx', index=False)
 
-    xs = pd.DataFrame()
-    xs = pd.concat([head_file, reads_exc])
-    xs.to_excel('ГЛАВНЫЙ.xlsx', index=False)
+    # ------------------------------------------
+
+    # with open('sw_data_new.csv', 'w') as f:
+    #     writer = csv.writer(f)
+    #     for row in str(read_excel_store):
+    #         writer.writerow(row)
+
+    # ------------------------------------------
+
+    return [return_list]
+
 
 if __name__ == '__main__':
     read_xlsx()
