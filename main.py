@@ -7,6 +7,9 @@ import pandas as pd
 import numpy as np
 
 
+return_list = []
+
+
 def extract_all_files(folders_ex):
     """
     Функция для поиска и добавления файлов по которым будет производиться извлечение данных
@@ -40,7 +43,8 @@ def read_xlsx(folders_read=os.path.abspath(os.curdir)):
 
         pattern = re.compile(r"[0-9]+")
         current_warehouse_number = pattern.findall(((store.split('/')[-1]).split('.')[0]))[0]
-        print(current_warehouse_number)
+
+        return_list.append(current_warehouse_number)
 
         read_excel_store = pd.read_excel(store)
 
@@ -143,6 +147,8 @@ def read_xlsx(folders_read=os.path.abspath(os.curdir)):
     #         writer.writerow(row)
 
     # ------------------------------------------
+
+    return [return_list]
 
 
 if __name__ == '__main__':
