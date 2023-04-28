@@ -137,12 +137,12 @@ class Main_window(customtkinter.CTk):
 
         self.logo_label = customtkinter.CTkLabel(master=self, text="                                                  "
                                                                    "                                                  ",
-                                                 font=customtkinter.CTkFont(size=10, weight="bold"),
+                                                 font=customtkinter.CTkFont(size=14, weight="bold"),
                                                  text_color=text_col)
         self.logo_label.grid(row=0, column=1, padx=20, pady=(90, 10))
 
         self.logo_label = customtkinter.CTkLabel(master=self, text=finish_status,
-                                                 font=customtkinter.CTkFont(size=10, weight="bold"),
+                                                 font=customtkinter.CTkFont(size=14, weight="bold"),
                                                  text_color=text_col)
         self.logo_label.grid(row=0, column=1, padx=20, pady=(90, 10))
 
