@@ -26,7 +26,7 @@ def read_xlsx(folders_read=os.path.abspath(os.curdir)):
     colnames = ['ДАТА', 'НАИМЕНОВАНИЕ', 'БРЕНД', 'АРТИКУЛ', 'КЛИЕНТ', 'КОЛИЧЕСТВО', 'ЦЕНА', 'СУММА', 'ПРОДАЖА',
                 'СУММА ПРОДАЖИ', 'Unnamed: 10', 'СКЛАД', 'Unnamed: 12', 'Unnamed: 13', 'ПРИМЕЧАНИЕ', 'НОМЕР ЗАКАЗА']
 
-    head_file = pd.read_excel('Главный.xlsx')
+    head_file = pd.read_excel('ГЛАВНЫЙ.xlsx')
     head_file.columns = colnames  # Переименование столбцов
 
     new_dict = {'ДАТА': [], 'НАИМЕНОВАНИЕ': [], 'БРЕНД': [], 'АРТИКУЛ': [], 'КЛИЕНТ': [], 'КОЛИЧЕСТВО': [], 'ЦЕНА': [], 'СУММА': [], 'ПРОДАЖА': [],
@@ -35,7 +35,6 @@ def read_xlsx(folders_read=os.path.abspath(os.curdir)):
     for store in extract_all_files(folders_read):
 
         read_excel_store = pd.read_excel(store)
-        print(store)
 
         if "Unnamed" in str(read_excel_store.columns[0]):
             read_excel_store = pd.read_excel(store, skiprows=2)
@@ -95,6 +94,7 @@ def read_xlsx(folders_read=os.path.abspath(os.curdir)):
                     new_dict['СУММА ПРОДАЖИ'].append(i)
 
             if 'склад' == fuck.lower():
+                #TODO добавить название складов из файла
                 store_store = read_excel_store[fuck]
                 for i in store_store:
                     new_dict['СКЛАД'].append(i)
@@ -119,10 +119,13 @@ def read_xlsx(folders_read=os.path.abspath(os.curdir)):
                     quantity = len_max - len(x)
                     for i in range(quantity):
                         x.append(None)
-
     fd = pd.DataFrame(new_dict)
-    sample = fd.to_excel('sample.xlsx')
+    fd.to_excel('sample.xlsx', index=False)
+    reads_exc = pd.read_excel('sample.xlsx')
 
+    xs = pd.DataFrame()
+    xs = pd.concat([head_file, reads_exc])
+    xs.to_excel('ГЛАВНЫЙ.xlsx', index=False)
 
         # ------------------------------------------
 
