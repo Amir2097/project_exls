@@ -2,6 +2,7 @@ import csv
 import glob
 import os
 import pandas as pd
+import numpy as np
 
 
 def extract_all_files(folders_ex):
@@ -34,6 +35,7 @@ def read_xlsx(folders_read=os.path.abspath(os.curdir)):
     for store in extract_all_files(folders_read):
 
         read_excel_store = pd.read_excel(store)
+        print(store)
 
         if "Unnamed" in str(read_excel_store.columns[0]):
             read_excel_store = pd.read_excel(store, skiprows=2)
@@ -42,7 +44,6 @@ def read_xlsx(folders_read=os.path.abspath(os.curdir)):
 
         for fuck in read_excel_store.columns:
 
-        #TODO обернуть в try, except чтобы пустые значения вставить.
             if 'дата' in fuck.lower():
                 date_store = read_excel_store[fuck]
                 for i in date_store:
@@ -83,13 +84,15 @@ def read_xlsx(folders_read=os.path.abspath(os.curdir)):
                 for i in summ_store:
                     new_dict['СУММА'].append(i)
 
+            if 'продажа' == fuck.lower():
+                summ_store = read_excel_store[fuck]
+                for i in summ_store:
+                    new_dict['ПРОДАЖА'].append(i)
+
             if 'сумма прод' in fuck.lower():
                 summ_buy_store = read_excel_store[fuck]
                 for i in summ_buy_store:
-                    if i is None:
-                        print(1)
-                    else:
-                        new_dict['СУММА ПРОДАЖИ'].append(i)
+                    new_dict['СУММА ПРОДАЖИ'].append(i)
 
             if 'склад' == fuck.lower():
                 store_store = read_excel_store[fuck]
@@ -105,23 +108,21 @@ def read_xlsx(folders_read=os.path.abspath(os.curdir)):
                 number_store = read_excel_store[fuck]
                 for i in number_store:
                     new_dict['НОМЕР ЗАКАЗА'].append(i)
-    # print(new_dict['СУММА'])
 
+        len_max = len(new_dict['ДАТА'])
+        for x in new_dict.values():
 
-    len_max = len(new_dict['ДАТА'])
-    for x in new_dict.values():
-
-        if x is None:
-            pass
-        else:
-            if len(x) < len_max:
-                quantity = len_max - len(x)
-                for i in range(quantity):
-                    x.append(None)
+            if x is None:
+                pass
+            else:
+                if len(x) < len_max:
+                    quantity = len_max - len(x)
+                    for i in range(quantity):
+                        x.append(None)
 
     fd = pd.DataFrame(new_dict)
     sample = fd.to_excel('sample.xlsx')
-    # print(fd)
+
 
         # ------------------------------------------
 
