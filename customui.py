@@ -112,7 +112,11 @@ class Main_window(customtkinter.CTk):
             # ----------------------------------------------------------------------------------------------------------
             import main
 
-            self.enter_log(main.read_xlsx(config.get("WORK", "WORK_DIR")))
+            return_run = main.read_xlsx(config.get("WORK", "WORK_DIR"))
+
+            for return_i in return_run:
+                for return_files in return_i:
+                    self.enter_log(f"Обрабатывается склад {return_files}")
 
             # ----------------------------------------------------------------------------------------------------------
         except Exception as er:
