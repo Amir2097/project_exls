@@ -15,8 +15,12 @@ config.read("config.ini")
 print(f"{wdir}")
 
 description_text = config.get("UI", "ABOUT")
+description_text = description_text.encode('utf-8')
 author_text = config.get("UI", "AUTHOR")
+author_text = author_text.encode('utf-8')
 version_text = config.get("UI", "VERSION")
+version_text = version_text.encode('utf-8')
+
 
 
 def change_appearance_mode_event(new_appearance_mode: str):
@@ -42,7 +46,7 @@ class Main_window(customtkinter.CTk):
     def __init__(self):
         super().__init__()
 
-        self.title(f'{config.get("UI", "TITLE")} v.{config.get("UI", "VERSION")}')
+        self.title(f'{(config.get("UI", "TITLE").encode("utf-8"))} v.{(config.get("UI", "VERSION")).encode("utf-8")}')
         self.geometry(f"{600}x{500}")
 
         self.grid_columnconfigure(1, weight=1)
