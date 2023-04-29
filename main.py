@@ -3,6 +3,8 @@ import os
 import re
 import pandas as pd
 from sys import platform
+from sample import sample
+import datetime
 
 return_list = []
 
@@ -17,7 +19,6 @@ def extract_all_files(folders_ex):
         files_list.append(os.path.join(folders_ex, file))
 
     return files_list
-
 
 def read_xlsx(folders_read=os.path.abspath(os.curdir)):
     """
@@ -65,79 +66,82 @@ def read_xlsx(folders_read=os.path.abspath(os.curdir)):
         else:
             read_excel_store = pd.read_excel(store)
 
-        for fuck in read_excel_store.columns:
+        if type(read_excel_store.columns.values[0]) == datetime.datetime:
+            sample(store, new_dict, current_warehouse_number)
 
-            if 'дата' in fuck.lower():
-                date_store = read_excel_store[fuck]
-                for i in date_store:
-                    new_dict['ДАТА'].append(i)
-                    new_dict['СКЛАД'].append(current_warehouse_number)
+        else:
+            for fuck in read_excel_store.columns:
+                if 'дата' in fuck.lower():
+                    date_store = read_excel_store[fuck]
+                    for i in date_store:
+                        new_dict['ДАТА'].append(i)
+                        new_dict['СКЛАД'].append(current_warehouse_number)
 
-            if 'наим' in fuck.lower() or 'описание' in fuck.lower():
-                title_store = read_excel_store[fuck]
-                for i in title_store:
-                    new_dict['НАИМЕНОВАНИЕ'].append(i)
+                if 'наим' in fuck.lower() or 'описание' in fuck.lower():
+                    title_store = read_excel_store[fuck]
+                    for i in title_store:
+                        new_dict['НАИМЕНОВАНИЕ'].append(i)
 
-            if 'бренд' in fuck.lower():
-                brand_store = read_excel_store[fuck]
-                for i in brand_store:
-                    new_dict['БРЕНД'].append(i)
+                if 'бренд' in fuck.lower():
+                    brand_store = read_excel_store[fuck]
+                    for i in brand_store:
+                        new_dict['БРЕНД'].append(i)
 
-            if 'артик' in fuck.lower() or 'код дет' in fuck.lower():
-                article_store = read_excel_store[fuck]
-                for i in article_store:
-                    new_dict['АРТИКУЛ'].append(i)
+                if 'артик' in fuck.lower() or 'код дет' in fuck.lower():
+                    article_store = read_excel_store[fuck]
+                    for i in article_store:
+                        new_dict['АРТИКУЛ'].append(i)
 
-            if 'клиент' in fuck.lower():
-                client_store = read_excel_store[fuck]
-                for i in client_store:
-                    new_dict['КЛИЕНТ'].append(i)
+                if 'клиент' in fuck.lower():
+                    client_store = read_excel_store[fuck]
+                    for i in client_store:
+                        new_dict['КЛИЕНТ'].append(i)
 
-            if 'колич' in fuck.lower() or 'кол-во' in fuck.lower() or 'зак.' in fuck.lower():
-                quantity_store = read_excel_store[fuck]
-                for i in quantity_store:
-                    new_dict['КОЛИЧЕСТВО'].append(i)
+                if 'колич' in fuck.lower() or 'кол-во' in fuck.lower() or 'зак.' in fuck.lower():
+                    quantity_store = read_excel_store[fuck]
+                    for i in quantity_store:
+                        new_dict['КОЛИЧЕСТВО'].append(i)
 
-            if 'цена' in fuck.lower():
-                price_store = read_excel_store[fuck]
-                for i in price_store:
-                    new_dict['ЦЕНА'].append(i)
+                if 'цена' in fuck.lower():
+                    price_store = read_excel_store[fuck]
+                    for i in price_store:
+                        new_dict['ЦЕНА'].append(i)
 
-            if 'сумма' == fuck.lower() or 'cумма, руб.' == fuck.lower():
-                summ_store = read_excel_store[fuck]
-                for i in summ_store:
-                    new_dict['СУММА'].append(i)
+                if 'сумма' == fuck.lower() or 'cумма, руб.' == fuck.lower():
+                    summ_store = read_excel_store[fuck]
+                    for i in summ_store:
+                        new_dict['СУММА'].append(i)
 
-            if 'продажа' == fuck.lower():
-                summ_store = read_excel_store[fuck]
-                for i in summ_store:
-                    new_dict['ПРОДАЖА'].append(i)
+                if 'продажа' == fuck.lower():
+                    summ_store = read_excel_store[fuck]
+                    for i in summ_store:
+                        new_dict['ПРОДАЖА'].append(i)
 
-            if 'сумма прод' in fuck.lower():
-                summ_buy_store = read_excel_store[fuck]
-                for i in summ_buy_store:
-                    new_dict['СУММА ПРОДАЖИ'].append(i)
+                if 'сумма прод' in fuck.lower():
+                    summ_buy_store = read_excel_store[fuck]
+                    for i in summ_buy_store:
+                        new_dict['СУММА ПРОДАЖИ'].append(i)
 
-            if 'прим' in fuck.lower() or 'ваш комм' in fuck.lower():
-                note_store = read_excel_store[fuck]
-                for i in note_store:
-                    new_dict['ПРИМЕЧАНИЕ'].append(i)
+                if 'прим' in fuck.lower() or 'ваш комм' in fuck.lower():
+                    note_store = read_excel_store[fuck]
+                    for i in note_store:
+                        new_dict['ПРИМЕЧАНИЕ'].append(i)
 
-            if 'номер зак' in fuck.lower() or '№' in fuck.lower():
-                number_store = read_excel_store[fuck]
-                for i in number_store:
-                    new_dict['НОМЕР ЗАКАЗА'].append(i)
+                if 'номер зак' in fuck.lower() or '№' in fuck.lower():
+                    number_store = read_excel_store[fuck]
+                    for i in number_store:
+                        new_dict['НОМЕР ЗАКАЗА'].append(i)
 
-        len_max = len(new_dict['ДАТА'])
-        for x in new_dict.values():
+            len_max = len(new_dict['ДАТА'])
+            for x in new_dict.values():
 
-            if x is None:
-                pass
-            else:
-                if len(x) < len_max:
-                    quantity = len_max - len(x)
-                    for i in range(quantity):
-                        x.append(None)
+                if x is None:
+                    pass
+                else:
+                    if len(x) < len_max:
+                        quantity = len_max - len(x)
+                        for i in range(quantity):
+                            x.append(None)
 
     if platform == "linux" or platform == "linux2":
         fd = pd.DataFrame(new_dict)
@@ -157,7 +161,6 @@ def read_xlsx(folders_read=os.path.abspath(os.curdir)):
         xs = pd.DataFrame()
         xs = pd.concat([head_file, reads_exc])
         xs.to_excel(f'{folders_read}\Главный.xlsx', index=False)
-
 
     return [return_list]
 
