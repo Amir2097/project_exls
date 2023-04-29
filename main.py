@@ -1,9 +1,7 @@
-import csv
 import glob
 import os
 import re
 import pandas as pd
-import numpy as np
 from sys import platform
 
 return_list = []
@@ -27,7 +25,7 @@ def read_xlsx(folders_read=os.path.abspath(os.curdir)):
     :return:
     """
 
-    global head_file
+    global head_file, current_warehouse_number
 
     colnames = ['ДАТА', 'НАИМЕНОВАНИЕ', 'БРЕНД', 'АРТИКУЛ', 'КЛИЕНТ', 'КОЛИЧЕСТВО', 'ЦЕНА', 'СУММА', 'ПРОДАЖА',
                 'СУММА ПРОДАЖИ', 'Unnamed: 10', 'СКЛАД', 'Unnamed: 12', 'Unnamed: 13', 'ПРИМЕЧАНИЕ', 'НОМЕР ЗАКАЗА']
@@ -51,7 +49,12 @@ def read_xlsx(folders_read=os.path.abspath(os.curdir)):
 
         pattern = re.compile(r"[0-9]+")
 
-        current_warehouse_number = pattern.findall(((store.split(r'(/)|(\)')[-1]).split('.')[0]))[0]
+        if platform == "linux" or platform == "linux2":
+            current_warehouse_number = pattern.findall(((store.split(r'/')[-1]).split('.')[0]))[0]
+        elif platform == "darwin":
+            pass
+        elif platform == "win32":
+            current_warehouse_number = pattern.findall(((store.split(r'\\')[-1]).split('.')[0]))[0]
 
         return_list.append(current_warehouse_number)
 
