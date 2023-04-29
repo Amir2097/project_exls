@@ -2,10 +2,16 @@ import csv
 import glob
 import os
 import re
-
 import pandas as pd
 import numpy as np
+from sys import platform
 
+if platform == "linux" or platform == "linux2":
+    os_separator = '/'
+elif platform == "darwin":
+    pass
+elif platform == "win32":
+    os_separator = r'\app.exe'
 
 return_list = []
 
@@ -28,11 +34,20 @@ def read_xlsx(folders_read=os.path.abspath(os.curdir)):
     :return:
     """
 
+    global head_file
+
     colnames = ['ДАТА', 'НАИМЕНОВАНИЕ', 'БРЕНД', 'АРТИКУЛ', 'КЛИЕНТ', 'КОЛИЧЕСТВО', 'ЦЕНА', 'СУММА', 'ПРОДАЖА',
                 'СУММА ПРОДАЖИ', 'Unnamed: 10', 'СКЛАД', 'Unnamed: 12', 'Unnamed: 13', 'ПРИМЕЧАНИЕ', 'НОМЕР ЗАКАЗА']
 
-    head_file = pd.read_excel(f'{folders_read}/ГЛАВНЫЙ.xlsx')
-    head_file.columns = colnames  # Переименование столбцов
+    if platform == "linux" or platform == "linux2":
+        head_file = pd.read_excel(f'{folders_read}/Главный.xlsx')
+        head_file.columns = colnames  # Переименование столбцов
+
+    elif platform == "darwin":
+        pass
+    elif platform == "win32":
+        head_file = pd.read_excel(f'{folders_read}\Главный.xlsx')
+        head_file.columns = colnames  # Переименование столбцов
 
     new_dict = {'ДАТА': [], 'НАИМЕНОВАНИЕ': [], 'БРЕНД': [], 'АРТИКУЛ': [], 'КЛИЕНТ': [], 'КОЛИЧЕСТВО': [], 'ЦЕНА': [],
                 'СУММА': [], 'ПРОДАЖА': [],
@@ -42,7 +57,8 @@ def read_xlsx(folders_read=os.path.abspath(os.curdir)):
     for store in extract_all_files(folders_read):
 
         pattern = re.compile(r"[0-9]+")
-        current_warehouse_number = pattern.findall(((store.split('/')[-1]).split('.')[0]))[0]
+
+        current_warehouse_number = pattern.findall(((store.split(r'(/)|(\)')[-1]).split('.')[0]))[0]
 
         return_list.append(current_warehouse_number)
 
@@ -126,22 +142,26 @@ def read_xlsx(folders_read=os.path.abspath(os.curdir)):
                     quantity = len_max - len(x)
                     for i in range(quantity):
                         x.append(None)
-    fd = pd.DataFrame(new_dict)
-    fd.to_excel('sample.xlsx', index=False)
-    reads_exc = pd.read_excel('sample.xlsx')
 
-    xs = pd.DataFrame()
-    xs = pd.concat([head_file, reads_exc])
-    xs.to_excel('ГЛАВНЫЙ.xlsx', index=False)
+    if platform == "linux" or platform == "linux2":
+        fd = pd.DataFrame(new_dict)
+        fd.to_excel(f'{folders_read}/sample.xlsx', index=False)
+        reads_exc = pd.read_excel(f'{folders_read}/sample.xlsx')
 
-    # ------------------------------------------
+        xs = pd.DataFrame()
+        xs = pd.concat([head_file, reads_exc])
+        xs.to_excel(f'{folders_read}/Главный.xlsx', index=False)
+    elif platform == "darwin":
+        pass
+    elif platform == "win32":
+        fd = pd.DataFrame(new_dict)
+        fd.to_excel(f'{folders_read}\sample.xlsx', index=False)
+        reads_exc = pd.read_excel(f'{folders_read}\sample.xlsx')
 
-    # with open('sw_data_new.csv', 'w') as f:
-    #     writer = csv.writer(f)
-    #     for row in str(read_excel_store):
-    #         writer.writerow(row)
+        xs = pd.DataFrame()
+        xs = pd.concat([head_file, reads_exc])
+        xs.to_excel(f'{folders_read}\Главный.xlsx', index=False)
 
-    # ------------------------------------------
 
     return [return_list]
 
