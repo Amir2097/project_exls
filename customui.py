@@ -1,26 +1,26 @@
 import os
+import time
 import tkinter
 import datetime
 import configparser
 import customtkinter
+from sys import platform
 
 customtkinter.set_appearance_mode("Dark")  # Modes: "System" (standard), "Dark", "Light"
 customtkinter.set_default_color_theme("green")  # Themes: "blue" (standard), "green", "dark-blue"
 
-wdir = f"{'/'.join(os.path.abspath(__file__).split('/')[:-1])}"
+if platform == "linux" or platform == "linux2":
+    wdir = f"{'/'.join(os.path.abspath(__file__).split('/')[:-1])}/"
+else:
+    sep_suk_win = "\\"
+    wdir = f"{f'{sep_suk_win}'.join(os.path.abspath(__file__).split(f'{sep_suk_win}')[:-1])}{sep_suk_win}"
 
 config = configparser.ConfigParser()
-config.read("config.ini")
-
-print(f"{wdir}")
+config.read(f"{wdir}config.ini")
 
 description_text = config.get("UI", "ABOUT")
-description_text = description_text.encode('utf-8')
 author_text = config.get("UI", "AUTHOR")
-author_text = author_text.encode('utf-8')
 version_text = config.get("UI", "VERSION")
-version_text = version_text.encode('utf-8')
-
 
 
 def change_appearance_mode_event(new_appearance_mode: str):
@@ -46,7 +46,7 @@ class Main_window(customtkinter.CTk):
     def __init__(self):
         super().__init__()
 
-        self.title(f'{(config.get("UI", "TITLE").encode("utf-8"))} v.{(config.get("UI", "VERSION")).encode("utf-8")}')
+        self.title(f'{(config.get("UI", "TITLE"))} v.{(config.get("UI", "VERSION"))}')
         self.geometry(f"{600}x{500}")
 
         self.grid_columnconfigure(1, weight=1)
@@ -116,11 +116,10 @@ class Main_window(customtkinter.CTk):
             # ----------------------------------------------------------------------------------------------------------
             import main
 
-            return_run = main.read_xlsx(config.get("WORK", "WORK_DIR"))
-
-            for return_i in return_run:
+            for return_i in main.read_xlsx(config.get("WORK", "WORK_DIR")):
                 for return_files in return_i:
                     self.enter_log(f"Обрабатывается склад {return_files}")
+                    time.sleep(2)
 
             # ----------------------------------------------------------------------------------------------------------
         except Exception as er:
@@ -144,12 +143,12 @@ class Main_window(customtkinter.CTk):
 
         self.logo_label = customtkinter.CTkLabel(master=self, text="                                                  "
                                                                    "                                                  ",
-                                                 font=customtkinter.CTkFont(size=10, weight="bold"),
+                                                 font=customtkinter.CTkFont(size=14, weight="bold"),
                                                  text_color=text_col)
         self.logo_label.grid(row=0, column=1, padx=20, pady=(90, 10))
 
         self.logo_label = customtkinter.CTkLabel(master=self, text=finish_status,
-                                                 font=customtkinter.CTkFont(size=10, weight="bold"),
+                                                 font=customtkinter.CTkFont(size=14, weight="bold"),
                                                  text_color=text_col)
         self.logo_label.grid(row=0, column=1, padx=20, pady=(90, 10))
 
@@ -202,10 +201,12 @@ class Set_window(customtkinter.CTk):
 
         config.set("WORK", "WORK_DIR", path_dir)
 
-        with open(f"{wdir}/config.ini", "w") as config_file:
+        with open(f"{wdir}config.ini", "w") as config_file:
             config.write(config_file)
 
         Set_window.destroy(self)
+        Main_window.destroy(self)
+        run()
 
 
 def run():

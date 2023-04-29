@@ -66,67 +66,106 @@ def read_xlsx(folders_read=os.path.abspath(os.curdir)):
             read_excel_store = pd.read_excel(store)
 
         for fuck in read_excel_store.columns:
+            len_index = read_excel_store.index.stop
+            try:
+                if 'дата' in fuck.lower():
+                    date_store = read_excel_store[fuck]
+                    for i in date_store:
+                        new_dict['ДАТА'].append(i)
+                        new_dict['СКЛАД'].append(current_warehouse_number)
+            except AttributeError:
+                for x in read_excel_store[fuck]:
+                    if str(x) != 'NaT':
+                        new_dict['ДАТА'].append(str(x))
+                        new_dict['СКЛАД'].append(current_warehouse_number)
 
-            if 'дата' in fuck.lower():
-                date_store = read_excel_store[fuck]
-                for i in date_store:
-                    new_dict['ДАТА'].append(i)
-                    new_dict['СКЛАД'].append(current_warehouse_number)
 
-            if 'наим' in fuck.lower() or 'описание' in fuck.lower():
-                title_store = read_excel_store[fuck]
-                for i in title_store:
-                    new_dict['НАИМЕНОВАНИЕ'].append(i)
+            try:
+                if 'наим' in fuck.lower() or 'описание' in fuck.lower():
+                    title_store = read_excel_store[fuck]
+                    for i in title_store:
+                        new_dict['НАИМЕНОВАНИЕ'].append(i)
+            except AttributeError:
+                pass
+            try:
+                if 'бренд' in fuck.lower():
+                    brand_store = read_excel_store[fuck]
+                    for i in brand_store:
+                        new_dict['БРЕНД'].append(i)
+            except AttributeError:
+                pass
 
-            if 'бренд' in fuck.lower():
-                brand_store = read_excel_store[fuck]
-                for i in brand_store:
-                    new_dict['БРЕНД'].append(i)
+            try:
+                if 'артик' in fuck.lower() or 'код дет' in fuck.lower():
+                    article_store = read_excel_store[fuck]
+                    for i in article_store:
+                        new_dict['АРТИКУЛ'].append(i)
+            except AttributeError:
+                pass
 
-            if 'артик' in fuck.lower() or 'код дет' in fuck.lower():
-                article_store = read_excel_store[fuck]
-                for i in article_store:
-                    new_dict['АРТИКУЛ'].append(i)
+            try:
+                if 'клиент' in fuck.lower():
+                    client_store = read_excel_store[fuck]
+                    for i in client_store:
+                        new_dict['КЛИЕНТ'].append(i)
+            except AttributeError:
+                pass
 
-            if 'клиент' in fuck.lower():
-                client_store = read_excel_store[fuck]
-                for i in client_store:
-                    new_dict['КЛИЕНТ'].append(i)
+            try:
+                if 'колич' in fuck.lower() or 'кол-во' in fuck.lower() or 'зак.' in fuck.lower():
+                    quantity_store = read_excel_store[fuck]
+                    for i in quantity_store:
+                        new_dict['КОЛИЧЕСТВО'].append(i)
+            except AttributeError:
+                pass
 
-            if 'колич' in fuck.lower() or 'кол-во' in fuck.lower() or 'зак.' in fuck.lower():
-                quantity_store = read_excel_store[fuck]
-                for i in quantity_store:
-                    new_dict['КОЛИЧЕСТВО'].append(i)
+            try:
+                if 'цена' in fuck.lower():
+                    price_store = read_excel_store[fuck]
+                    for i in price_store:
+                        new_dict['ЦЕНА'].append(i)
+            except AttributeError:
+                pass
 
-            if 'цена' in fuck.lower():
-                price_store = read_excel_store[fuck]
-                for i in price_store:
-                    new_dict['ЦЕНА'].append(i)
+            try:
+                if 'сумма' == fuck.lower() or 'cумма, руб.' == fuck.lower():
+                    summ_store = read_excel_store[fuck]
+                    for i in summ_store:
+                        new_dict['СУММА'].append(i)
+            except AttributeError:
+                pass
 
-            if 'сумма' == fuck.lower() or 'cумма, руб.' == fuck.lower():
-                summ_store = read_excel_store[fuck]
-                for i in summ_store:
-                    new_dict['СУММА'].append(i)
+            try:
+                if 'продажа' == fuck.lower():
+                    summ_store = read_excel_store[fuck]
+                    for i in summ_store:
+                        new_dict['ПРОДАЖА'].append(i)
+            except AttributeError:
+                pass
 
-            if 'продажа' == fuck.lower():
-                summ_store = read_excel_store[fuck]
-                for i in summ_store:
-                    new_dict['ПРОДАЖА'].append(i)
+            try:
+                if 'сумма прод' in fuck.lower():
+                    summ_buy_store = read_excel_store[fuck]
+                    for i in summ_buy_store:
+                        new_dict['СУММА ПРОДАЖИ'].append(i)
+            except AttributeError:
+                pass
 
-            if 'сумма прод' in fuck.lower():
-                summ_buy_store = read_excel_store[fuck]
-                for i in summ_buy_store:
-                    new_dict['СУММА ПРОДАЖИ'].append(i)
+            try:
+                if 'прим' in fuck.lower() or 'ваш комм' in fuck.lower():
+                    note_store = read_excel_store[fuck]
+                    for i in note_store:
+                        new_dict['ПРИМЕЧАНИЕ'].append(i)
+            except AttributeError:
+                pass
 
-            if 'прим' in fuck.lower() or 'ваш комм' in fuck.lower():
-                note_store = read_excel_store[fuck]
-                for i in note_store:
-                    new_dict['ПРИМЕЧАНИЕ'].append(i)
-
-            if 'номер зак' in fuck.lower() or '№' in fuck.lower():
-                number_store = read_excel_store[fuck]
-                for i in number_store:
-                    new_dict['НОМЕР ЗАКАЗА'].append(i)
+            try:
+                if 'номер зак' in fuck.lower() or '№' in fuck.lower():
+                    number_store = read_excel_store[fuck]
+                    for i in number_store:
+                        new_dict['НОМЕР ЗАКАЗА'].append(i)
+            except AttributeError:
+                pass
 
         len_max = len(new_dict['ДАТА'])
         for x in new_dict.values():
@@ -157,7 +196,6 @@ def read_xlsx(folders_read=os.path.abspath(os.curdir)):
         xs = pd.DataFrame()
         xs = pd.concat([head_file, reads_exc])
         xs.to_excel(f'{folders_read}\Главный.xlsx', index=False)
-
 
     return [return_list]
 
