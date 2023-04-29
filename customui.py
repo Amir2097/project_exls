@@ -10,7 +10,7 @@ customtkinter.set_default_color_theme("green")  # Themes: "blue" (standard), "gr
 wdir = f"{'/'.join(os.path.abspath(__file__).split('/')[:-1])}"
 
 config = configparser.ConfigParser()
-config.read(f"{wdir}/config.ini")
+config.read("config.ini")
 
 print(f"{wdir}")
 
