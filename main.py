@@ -6,13 +6,6 @@ import pandas as pd
 import numpy as np
 from sys import platform
 
-if platform == "linux" or platform == "linux2":
-    os_separator = '/'
-elif platform == "darwin":
-    pass
-elif platform == "win32":
-    os_separator = r'\app.exe'
-
 return_list = []
 
 
