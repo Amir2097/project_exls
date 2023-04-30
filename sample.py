@@ -1,4 +1,5 @@
 import pandas as pd
+import datetime
 
 
 def sample(document, new_dict, current_warehouse_number):
@@ -7,7 +8,7 @@ def sample(document, new_dict, current_warehouse_number):
 
     for x in head_file[0]:
         if str(x) != 'NaT':
-            new_dict['ДАТА'].append(str(x))
+            new_dict['ДАТА'].append(x.strftime('%d-%m-%Y'))
             new_dict['СКЛАД'].append(current_warehouse_number)
 
     for i in range(0, len_index, 2):

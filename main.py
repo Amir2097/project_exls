@@ -20,6 +20,7 @@ def extract_all_files(folders_ex):
 
     return files_list
 
+
 def read_xlsx(folders_read=os.path.abspath(os.curdir)):
     """
 
@@ -74,7 +75,15 @@ def read_xlsx(folders_read=os.path.abspath(os.curdir)):
                 if 'дата' in fuck.lower():
                     date_store = read_excel_store[fuck]
                     for i in date_store:
-                        new_dict['ДАТА'].append(i)
+                        if len(i) > 9:
+                            ii = i.split(' ')[0].split('-')
+                            form_ii = f'{ii[2]}.{ii[1]}.{ii[0]}'
+                            new_dict['ДАТА'].append(form_ii)
+
+                        if len(i) == 8:
+                            ii = i.split('.')
+                            form_ii = f'{ii[0]}.{ii[1]}.20{ii[2]}'
+                            new_dict['ДАТА'].append(form_ii)
                         new_dict['СКЛАД'].append(current_warehouse_number)
 
                 if 'наим' in fuck.lower() or 'описание' in fuck.lower():
@@ -167,4 +176,3 @@ def read_xlsx(folders_read=os.path.abspath(os.curdir)):
 
 if __name__ == '__main__':
     read_xlsx()
-    # extract_all_files()
